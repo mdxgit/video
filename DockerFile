@@ -3,7 +3,7 @@ FROM python:bullseye
 # 基于python docker构建
 # docker python: https://hub.docker.com/_/python?tab=tags
 # 构建command
-# docker build -t video:image -f DockerFile .
+# docker build -t video:v1 -f DockerFile .
 
 # 解压复制文件
 COPY ./package /tmp/package
@@ -43,8 +43,7 @@ RUN set -e \
 && cd  /tmp/package/ && mkdir youtubedr_2.7 \
 && tar -zxvf youtubedr_2.7.10_linux_amd64.tar.gz -C ./youtubedr_2.7 \
 && mv ./youtubedr_2.7/youtubedr /usr/local/bin/youtubedr \
-&& chmod +x /usr/local/bin/youtubedr
-
+&& chmod +x /usr/local/bin/youtubedr && rm -rf ./youtubedr_2.7
 
 
 # 启动时的命令
