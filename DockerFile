@@ -1,0 +1,51 @@
+FROM python:bullseye
+
+# 基于python docker构建
+# docker python: https://hub.docker.com/_/python?tab=tags
+# 构建command
+# docker build -t video:image -f DockerFile .
+
+# 解压复制文件
+COPY ./package /tmp/package
+
+RUN set -e \
+# 阿里镜像：https://developer.aliyun.com/mirror/debian
+&& echo "deb http://mirrors.aliyun.com/debian/ bullseye main non-free contrib\ndeb-src http://mirrors.aliyun.com/debian/ bullseye main non-free contrib\ndeb http://mirrors.aliyun.com/debian-security/ bullseye-security main\ndeb-src http://mirrors.aliyun.com/debian-security/ bullseye-security main\ndeb http://mirrors.aliyun.com/debian/ bullseye-updates main non-free contrib\ndeb-src http://mirrors.aliyun.com/debian/ bullseye-updates main non-free contrib\ndeb http://mirrors.aliyun.com/debian/ bullseye-backports main non-free contrib\ndeb-src http://mirrors.aliyun.com/debian/ bullseye-backports main non-free contrib" > /etc/apt/sources.list \
+&& rm -rf /etc/apt/sources.list.d/* \
+&& apt-get clean all && apt-get -y update \
+# 基础组件
+&& apt-get -y install gnupg1 gnupg2 inetutils-ping iproute2 \
+
+# 升级 python
+&& /usr/local/bin/python -m pip install --upgrade pip \
+
+# 安装 go
+# apt-get -y install golang-go
+# echo "export GOPATH=$HOME/go" >> $HOME/.bash_profile
+# source $HOME/.bash_profile
+
+# you-get
+&& pip3 install you-get \
+
+# 安装 lux
+&& cd  /tmp/package/ && tar -zxvf lux_0.13.0_Linux_64-bit.tar.gz -C /usr/local/bin/ && chmod +x /usr/local/bin/lux \
+
+# 安装 youtube-dl
+&& apt-get -y install youtube-dl \
+
+# 安装 ffmpeg
+&& apt-get -y install ffmpeg \
+
+# 安装 ykdl
+&& pip3 install ykdl \
+
+# kkdai/youtube
+&& cd  /tmp/package/ && mkdir youtubedr_2.7 \
+&& tar -zxvf youtubedr_2.7.10_linux_amd64.tar.gz -C ./youtubedr_2.7 \
+&& mv ./youtubedr_2.7/youtubedr /usr/local/bin/youtubedr \
+&& chmod +x /usr/local/bin/youtubedr
+
+
+
+# 启动时的命令
+CMD ["bash"]
