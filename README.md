@@ -74,6 +74,20 @@ kill $(ps -aux|grep clash| grep -v grep | awk '{print $2}')
 
 [github: https://github.com/soimort/you-get](https://github.com/soimort/you-get)
 
+```shell
+# 帮助命令
+you-get --help
+
+# 查看待下载视频信息
+you-get -i url
+
+# 下载
+you-get url
+
+# 使用火狐浏览器的 cookies.sqlite
+you-get -c cookies.sqlite  url
+```
+
 ### go lux
 
 [github: https://github.com/iawia002/lux](https://github.com/iawia002/lux)
@@ -109,3 +123,19 @@ kill $(ps -aux|grep clash| grep -v grep | awk '{print $2}')
 [官网 https://mpv.io/](https://mpv.io/)
 
 [github: https://github.com/mpv-player](https://github.com/mpv-player)
+
+## 火狐浏览器 cookies.sqlite
+
+### windows
+
+### mac
+
+```shell
+# 家目录
+cd ~/Library/Application\ Support/Firefox/Profiles/
+# [文件名].default-release
+```
+
+![01.png](https://raw.githubusercontent.com/mdxgit/video/main/img/01.png)
+
+

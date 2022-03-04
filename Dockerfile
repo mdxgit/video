@@ -9,6 +9,9 @@ FROM python:3.9-bullseye
 COPY ./package /tmp/package
 
 RUN set -e \
+# 阿里镜像：https://developer.aliyun.com/mirror/debian
+# && echo "deb http://mirrors.aliyun.com/debian/ bullseye main non-free contrib\ndeb-src http://mirrors.aliyun.com/debian/ bullseye main non-free contrib\ndeb http://mirrors.aliyun.com/debian-security/ bullseye-security main\ndeb-src http://mirrors.aliyun.com/debian-security/ bullseye-security main\ndeb http://mirrors.aliyun.com/debian/ bullseye-updates main non-free contrib\ndeb-src http://mirrors.aliyun.com/debian/ bullseye-updates main non-free contrib\ndeb http://mirrors.aliyun.com/debian/ bullseye-backports main non-free contrib\ndeb-src http://mirrors.aliyun.com/debian/ bullseye-backports main non-free contrib" > /etc/apt/sources.list \
+
 # 华为镜像：https://mirrors.huaweicloud.com/home
 && sed -i "s@http://ftp.debian.org@https://repo.huaweicloud.com@g" /etc/apt/sources.list \
 && sed -i "s@http://security.debian.org@https://repo.huaweicloud.com@g" /etc/apt/sources.list \
