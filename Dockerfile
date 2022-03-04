@@ -1,17 +1,21 @@
-FROM python:bullseye
+FROM python:3.9-bullseye
 
 # 基于python docker构建
 # docker python: https://hub.docker.com/_/python?tab=tags
 # 构建command
-# docker build -t video:v1 -f DockerFile .
+# docker build -t modongxiao/video:1.0 .
 
 # 解压复制文件
 COPY ./package /tmp/package
 
 RUN set -e \
-# 阿里镜像：https://developer.aliyun.com/mirror/debian
-&& echo "deb http://mirrors.aliyun.com/debian/ bullseye main non-free contrib\ndeb-src http://mirrors.aliyun.com/debian/ bullseye main non-free contrib\ndeb http://mirrors.aliyun.com/debian-security/ bullseye-security main\ndeb-src http://mirrors.aliyun.com/debian-security/ bullseye-security main\ndeb http://mirrors.aliyun.com/debian/ bullseye-updates main non-free contrib\ndeb-src http://mirrors.aliyun.com/debian/ bullseye-updates main non-free contrib\ndeb http://mirrors.aliyun.com/debian/ bullseye-backports main non-free contrib\ndeb-src http://mirrors.aliyun.com/debian/ bullseye-backports main non-free contrib" > /etc/apt/sources.list \
+# 华为镜像：https://mirrors.huaweicloud.com/home
+&& sed -i "s@http://ftp.debian.org@https://repo.huaweicloud.com@g" /etc/apt/sources.list \
+&& sed -i "s@http://security.debian.org@https://repo.huaweicloud.com@g" /etc/apt/sources.list \
+
+# update
 && rm -rf /etc/apt/sources.list.d/* \
+&& apt-get install apt-transport-https ca-certificates \
 && apt-get clean all && apt-get -y update \
 # 基础组件
 && apt-get -y install gnupg1 gnupg2 inetutils-ping iproute2 \
@@ -43,8 +47,13 @@ RUN set -e \
 && cd  /tmp/package/ && mkdir youtubedr_2.7 \
 && tar -zxvf youtubedr_2.7.10_linux_amd64.tar.gz -C ./youtubedr_2.7 \
 && mv ./youtubedr_2.7/youtubedr /usr/local/bin/youtubedr \
-&& chmod +x /usr/local/bin/youtubedr && rm -rf ./youtubedr_2.7
+&& chmod +x /usr/local/bin/youtubedr && rm -rf ./youtubedr_2.7 \
 
+# 安装 clash 代理
+&& cd  /tmp/package/ && gunzip clash-linux-amd64-v1.9.0.gz \
+&& mv clash-linux-amd64-v1.9.0 /usr/local/bin/clash \
+&& chmod +x /usr/local/bin/clash \
+&& mkdir -pv /root/.config/clash
 
 # 启动时的命令
-CMD ["bash"]
+CMD ["python3"]
