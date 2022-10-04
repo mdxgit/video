@@ -25,6 +25,8 @@ docker build -t video:v1 .
 # --rm 运行结束后自动删除容器
 # -it 运行后直接进入容器
 docker run --rm -it -v [本机目录]:[容器目录] 【video:image 镜像版本】 bash
+# 示例
+docker run --rm -it -v "E:\mvc:/mvc:cached" modongxiao/video:1.0  bash
 ```
 
 ## 配置 clash 代理工具,访问外网时需要，国内网络不用配置
@@ -95,7 +97,13 @@ you-get -c cookies.sqlite  url
 [bin文件：https://github.com/iawia002/lux/releases](https://github.com/iawia002/lux/releases)
 
 备注： annie重命名为lux
+```shell
+# 查看连接信息
+lux -i "url"
 
+# 下载
+lux "url"
+```
 ### youtube-dl
 
 [github: https://github.com/ytdl-org/youtube-dl](https://github.com/ytdl-org/youtube-dl)
